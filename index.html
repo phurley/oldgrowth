@@ -74,7 +74,10 @@ function popupHtml(f){
   let h = '<div class="popup-title">'+f.name+'</div>';
   if (f.county) h += '<div class="popup-county">'+f.county+'</div>';
   if (f.desc) h += '<div class="popup-desc">'+f.desc+'</div>';
-  if (f.url) h += '<a class="popup-link" target="_blank" rel="noopener" href="'+f.url+'">Details &amp; directions &rarr;</a>';
+  if (f.url) {
+    const url = /^https?:\/\//.test(f.url) ? f.url : 'https://' + f.url;
+    h += '<a class="popup-link" target="_blank" rel="noopener" href="'+url+'">Details &amp; directions &rarr;</a>';
+  }
   return h;
 }
 
