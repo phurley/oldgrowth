@@ -28,6 +28,8 @@
   .tag.circ { background:#e7dcc2; color:#7a5d22; }
   .tag.pt   { background:#e0ddd5; color:#666; }
   #map { flex:1; }
+  .ogfn-pin { background:none; border:none; }
+  .ogfn-pin svg { display:block; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35)); }
   .popup-title { font-size:1rem; font-weight:700; color:var(--green-dark); margin-bottom:3px; }
   .popup-county { font-size:.78rem; color:#666; margin-bottom:6px; }
   .popup-desc { font-size:.82rem; line-height:1.4; max-height:160px; overflow-y:auto; }
@@ -72,10 +74,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-const greenIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize:[25,41], iconAnchor:[12,41], popupAnchor:[1,-34], shadowSize:[41,41]
+// Self-contained SVG pin (no external image dependency)
+const PIN_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="40" viewBox="0 0 26 40">' +
+  '<path d="M13 0C5.82 0 0 5.82 0 13c0 9.25 13 27 13 27s13-17.75 13-27C26 5.82 20.18 0 13 0z" ' +
+  'fill="#2f5d3a" stroke="#fff" stroke-width="1.5"/>' +
+  '<circle cx="13" cy="13" r="5" fill="#fff"/></svg>';
+const greenIcon = L.divIcon({
+  html: PIN_SVG, className: 'ogfn-pin',
+  iconSize:[26,40], iconAnchor:[13,40], popupAnchor:[0,-36]
 });
 
 function fmtAcres(a){ return a >= 1000 ? Math.round(a).toLocaleString() : (a % 1 ? a : Math.round(a)); }
